@@ -71,7 +71,7 @@
                      <?php
                         if (isset($_SESSION['id'])) {
                         ?>
-                     <a href="#" class="btn btn-outline-dark btn-sm" id="btncart">
+                     <a href="shoppingcart.php" class="btn btn-outline-dark btn-sm" id="btncart">
                          <i class="bi-cart-fill me-1"></i>
                          Carrinho
                          <span class="badge bg-dark text-white ms-1 rounded-pill">

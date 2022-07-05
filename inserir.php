@@ -54,7 +54,7 @@
          ;
          }
          else {echo'<p>Os dados não foram inseridos</br>';
-         }
+         }  
          
          
  ?>

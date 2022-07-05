@@ -1,53 +1,56 @@
 <?php
 session_start();
 include('funcao.php');
-include('mail_fatura.php');
-if (isset($_SESSION['id'])) {
-    $id = $_SESSION['id'];
-    $sql = "SELECT * FROM utilizadores WHERE id = '$id'";
-    $result = DBExecute($sql);
-    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-    $admin = $row['admin'];
-    $username = $row['username'];
-    
-}
-if (isset($_POST['finishpay'])){
-    $nomecompleto=$_POST['nomecompleto'];
-    $email=$_POST['email'];
-    $morada=$_POST['morada'];
-    $codigopostal=$_POST['codigopostal'];
-    $pais=$_POST['pais'];
-    $cidade=$_POST['cidade'];
-    $sql="INSERT INTO fatura(nomecompleto, email, morada, codigopostal, pais, cidade) VALUES ('$nomecompleto','$email','$morada','$codigopostal','$pais','$cidade')";
+include('carrinho.php');
+include('utilizador.php');
+$id = $_SESSION['id'];
+$utilizador = buscarUtilizador($id);
+$admin = $utilizador['admin'];
+$username = $utilizador['username'];
+$nomecompleto = $utilizador['nomeapelido'];
+$email = $utilizador['email'];
+$morada = $utilizador['morada'];
+$codigopostal = $utilizador['codigopostal'];
+$pais = "Portugal";
+$cidade = $utilizador['cidade'];
+$cidades = ["Coimbra", "Porto", "Lisboa", "Braga"];
+if (isset($_POST['finishpay'])) {
+    $sql = "INSERT INTO fatura(nomecompleto, email, morada, codigopostal, pais, cidade) VALUES ('$nomecompleto','$email','$morada','$codigopostal','$pais','$cidade')";
     $response = DBExecute($sql);
-    sendEmail($nomecompleto,$email,$morada,$codigopostal,$pais,$cidade);
-    echo $response;die;
+    $carrinhoAtivo = VerificarCarrinhoExisteAtivo($id);
+    FinalizarCarrinho($carrinhoAtivo['id']);
 }
+$ItensDoCarrinho = ListarTodoCarrinho($id);
+$totalprodutos = 0;
+while ($item = mysqli_fetch_array($ItensDoCarrinho, MYSQLI_ASSOC)) {
+    $totalprodutos =  $totalprodutos + $item['precoTotalItens'];
+}
+$ItensDoCarrinho = ListarTodoCarrinho($id);
 
 ?>
 <!doctype html>
 <html lang"PT">
 <script>
-// Example starter JavaScript for disabling form submissions if there are invalid fields
-(function() {
-    'use strict'
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict'
 
-    window.addEventListener('load', function() {
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.getElementsByClassName('needs-validation')
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation')
 
-        // Loop over them and prevent submission
-        Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-            }, false)
-        })
-    }, false)
-}())
+            // Loop over them and prevent submission
+            Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        }, false)
+    }())
 </script>
 
 <head>
@@ -95,18 +98,28 @@ if (isset($_POST['finishpay'])){
                 </h4>
                 <ul class="list-group mb-3 sticky-top">
 
-                    <?php foreach($_SESSION['produtos_carrinho'] as $elemento) : ?>
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div>
-                            <h6 class="my-0"><?php echo $elemento['nome'] ?></h6>
-                            <small class="text-muted"><?php echo $elemento['descricao'] ?></small>
-                        </div>
-                        <span class="text-muted"><?php echo $elemento['valor'] ?>€</span>
-                    </li>
-                    <?php endforeach;?>
+                    <?php
+                    while ($item = mysqli_fetch_array($ItensDoCarrinho, MYSQLI_ASSOC)) {
+                    ?>
+                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                            <div>
+                                <table class="table">
+                                    <thead>
+                                        <td><img width="50" src="<?= $item['urlImage']; ?>" /></td>
+                                        <td>
+                                            <h6 class="my-0"><?php echo $item['nomeProduto'] ?></h6>
+                                        </td>
+                                    </thead>
+                                </table>
+                            </div>
+                            <span class="text-muted"><?php echo $item['precoTotalItens'] ?>€</span>
+                        </li>
+                    <?php
+                    }
+                    ?>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Total (EUROS)</span>
-                        <strong><?php echo $_SESSION['valortotal'] ?>€</strong>
+                        <strong><?php echo $totalprodutos ?>€</strong>
                     </li>
                 </ul>
             </div>
@@ -116,46 +129,39 @@ if (isset($_POST['finishpay'])){
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <label for="firstName">Nome Completo</label>
-                            <input type="text" class="form-control" id="firstName" placeholder="Insira o seu nome"
-                                name="nomecompleto" required="">
+                            <input type="text" class="form-control" id="firstName" value="<?= $nomecompleto ?>" name="nomecompleto" required="">
                             <div class="invalid-feedback"> Tem que ser usado o nome completo! </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="email">Email <span class="text-muted"></span></label>
-                        <input type="email" class="form-control" id="email" placeholder="you@example.com" name="email">
+                        <input type="email" class="form-control" id="email" value="<?= $email ?>" name="email">
                         <div class="invalid-feedback"> Use um email valido! </div>
                     </div>
                     <div class="mb-3">
                         <label for="address">Morada</label>
-                        <input type="text" class="form-control" id="address" placeholder="1234 Main St" required=""
-                            name="morada">
+                        <input type="text" class="form-control" id="address" value="<?= $morada ?>" required="" name="morada">
                         <div class="invalid-feedback"> Please enter your shipping address. </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-5 mb-3">
-                            <label for="country">Pais</label>
-                            <select class="custom-select d-block w-100" id="country" required="" name="pais">
-                                <option value="">Escolha...</option>
-                                <option>Portugal</option>
-                            </select>
-                            <div class="invalid-feedback"> Please select a valid country. </div>
-                        </div>
                         <div class="col-md-4 mb-3">
                             <label for="state">Cidade</label>
                             <select class="custom-select d-block w-100" id="state" required="" name="cidade">
-                                <option value="">Escolha...</option>
-                                <option>Coimbra</option>
-                                <option>Porto</option>
-                                <option>Lisboa</option>
-                                <option>Braga</option>
+                                <?php
+                                
+                                foreach ($cidades as $value) {
+                                    
+                                ?>
+                                    <option value="<?= $value ?>"><?= $value ?></option>
+                                <?php
+                                }
+                                ?>
                             </select>
                             <div class="invalid-feedback"> Please provide a valid state. </div>
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="zip">Codigo Postal</label>
-                            <input type="text" class="form-control" id="zip" placeholder="" required=""
-                                name="codigopostal">
+                            <input type="text" class="form-control" id="zip" value="<?= $codigopostal ?>" name="codigopostal">
                             <div class="invalid-feedback"> Zip code required. </div>
                         </div>
                     </div>
@@ -225,8 +231,8 @@ if (isset($_POST['finishpay'])){
         </div>
         <footer>
             <?php
-require "footer.php"
-?>
+            require "footer.php"
+            ?>
         </footer>
     </div>
 </body>

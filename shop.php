@@ -30,18 +30,18 @@ if (isset($_SESSION['id'])) {
     <!--- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
     <style>
-    .slider__home {
-        height: 350px;
-    }
+        .slider__home {
+            height: 350px;
+        }
 
-    .carousel-item img {
-        object-fit: cover;
-    }
+        .carousel-item img {
+            object-fit: cover;
+        }
 
-    .product_img {
-        height: 150px;
-        object-fit: cover;
-    }
+        .product_img {
+            height: 150px;
+            object-fit: cover;
+        }
     </style>
 </head>
 
@@ -54,88 +54,85 @@ if (isset($_SESSION['id'])) {
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <?php
-                $sql = "SELECT * FROM produtos ORDER BY id DESC LIMIT 8";
+                $sql = "SELECT * FROM produtos ORDER BY id DESC";
                 $result = DBExecute($sql);
                 while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                 ?>
-                <div class="col mb-5">
-                    <div class="card h-100">
-                        <!-- Sale badge-->
-                        <?php
-                            if($row['promocional'] != 0){
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            <?php
+                            if ($row['promocional'] != 0) {
                             ?>
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Saldo
-                        </div>
-                        <?php
+                                <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Saldo
+                                </div>
+                            <?php
                             }
                             ?>
-                        <!-- Product image-->
-                        <img class="card-img-top product_img" src="<?= $row['imagem'] ?>" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder"><?= $row['nome'] ?></h5>
-                                <!-- Product reviews-->
-                                <div class="d-flex justify-content-center small text-warning mb-2">
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                </div>
-                                <!-- Product price-->
-                                <?php
+                            <!-- Product image-->
+                            <img class="card-img-top product_img" src="<?= $row['imagem'] ?>" alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder"><?= $row['nome'] ?></h5>
+                                    <!-- Product reviews-->
+                                    <div class="d-flex justify-content-center small text-warning mb-2">
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                    </div>
+                                    <!-- Product price-->
+                                    <?php
                                     if ($row['promocional'] != null) {                                    ?>
-                                <span class="text-muted text-decoration-line-through"><?= $row['promocional'] ?> €
-                                </span>
-                                <?= $row['valor'] ?>€
-                                <?php
+                                        <span class="text-muted text-decoration-line-through"><?= $row['promocional'] ?> €
+                                        </span>
+                                        <?= $row['valor'] ?>€
+                                    <?php
                                     } else {
                                     ?>
-                                <?= $row['valor'] ?>€
-                                <?php
+                                        <?= $row['valor'] ?>€
+                                    <?php
                                     }
                                     ?>
+                                </div>
                             </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center">
-                                <?php
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center">
+                                    <?php
                                     if (isset($_SESSION['id'])) {
 
                                     ?>
-                                <form action="" method="post">
-                                    <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                    <input type="hidden" name="id_user" value="<?= $id ?>">
-                                    <button type="submit" class="btn btn-outline-dark mt-auto" name="add"
-                                        href="#">Adicionar ao Carrinho</button>
-                                </form>
-                                <?php
+                                        <form action="" method="post">
+                                            <input type="hidden" name="id_produto" value="<?= $row['id'] ?>">
+                                            <input type="hidden" name="id_user" value="<?= $id ?>">
+                                            <input type="hidden" name="valor_produto" value="<?= $row['valor'] ?>">
+                                            <button type="submit" class="btn btn-outline-dark mt-auto" name="adicionar_carrinho">Adicionar ao Carrinho</button>
+                                        </form>
+                                    <?php
                                     } else {
                                     ?>
-                                <a class="btn btn-outline-dark mt-auto" href="logar.php">Adicionar ao Carrinho</a>
-                                <?php
+                                        <a class="btn btn-outline-dark mt-auto" href="logar.php">Adicionar ao Carrinho</a>
+                                    <?php
                                     }
                                     ?>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 <?php
                 }
                 ?>
                 <?php
 
-                if (isset($_POST['add'])) {
-                    $uid = uniqid();
-                    $id_produto = $_POST['id'];
-                    $id_user = $_POST['id_user'];
-                    $sql = "INSERT INTO carrinho (id,id_user) VALUES ('$uid','$id_user')";
-                    echo DBExecute($sql);die;
-                    echo "<script>alert('Produto adicionado ao carrinho!');</script>";
-                    echo "<script>window.location.href = 'shop.php';</script>";
+                if (isset($_POST['adicionar_carrinho'])) {
+                    include("carrinho.php");
+                    $carrinho_id = AdicionarCarrinho($_POST['id_user']);
+                    $id_produto = $_POST['id_produto'];
+                    AtualizarItemCarrinho($carrinho_id["id"], $id_produto);
                 }
                 ?>
             </div>
@@ -144,8 +141,8 @@ if (isset($_SESSION['id'])) {
     <!-- Footer-->
     <footer>
         <?php
-require "footer.php"
-?>
+        require "footer.php"
+        ?>
     </footer>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
