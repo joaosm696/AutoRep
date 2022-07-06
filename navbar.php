@@ -7,6 +7,7 @@
      }
 
         ?>
+        
 
      <style>
 .cart {
@@ -101,9 +102,10 @@
                             <i class="bi bi-cup"></i> Painel </a>';
                         }
                         if (isset($_SESSION['id'])) {
+                            echo '<a href="profile.php" class="btn btn-primary btn-sm ms-3">
+                            <i class="bi-person-circle"></i> Perfil </a>';
                             echo '<a href="logout.php" class="btn btn-danger ms-3 btn-sm">
-                            <i class="bi bi-door-open"></i> Sair
-                            </a>';
+                            <i class="bi bi-door-open"></i> Sair </a>';
                         } else {
                             echo '<a href="registar.php" class="btn btn-success btn-sm ms-3">Registo</a>';
                             echo '<a href="logar.php" class="btn btn-primary btn-sm ms-3">Login</a>';
