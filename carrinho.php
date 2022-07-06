@@ -43,7 +43,7 @@ function atualizar_custo_carrinho($carrinho_id)
 
 function FinalizarCarrinho($id)
 {
-	$sql = "update carrinho set estado= 1, datahora=now() where id=" . $id;
+	$sql = "update carrinho set estado= 1, datahora=now() , preco_total_carrinho = (SELECT sum(preco_total_itens) FROM carrinho_itens WHERE carrinho_id =" . $id.") where id=" . $id;
 	$resultado = DBExecute($sql);
 	if (!$resultado) {
 		$_SESSION["erro"] = "Não foi possível finalizar o carrinho.";
