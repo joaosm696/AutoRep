@@ -22,6 +22,7 @@
      $morada=$_POST['morada'];
      $cidade=$_POST['cidade'];
      $codigopostal=$_POST['codigopostal'];
+     $instagram=$_POST['instagram'];
           
      
      /*avalia se alguma das varáveis contém um valor nulo ou string vazia*/
@@ -44,7 +45,7 @@
         
          
          //$insere= "INSERT INTO `utilizadores` (`id`, `username`, `password`, `email`, `tipo`) VALUES ('".$username."','".$password."','".$email."','".$tipo."')";
-         $insere= "INSERT INTO `utilizadores` (`id`, `username`, `nomeapelido` , `password`, `email` , `nif` , `morada` , `cidade` , `codigopostal` ) VALUES (NULL, '".$username."', '".$nomeapelido."', '".$password."', '".$email."' , '".$nif."' , '".$morada."', '".$cidade."' , '".$codigopostal."');";
+         $insere= "INSERT INTO `utilizadores` (`id`, `username`, `nomeapelido` , `password`, `email` , `nif` , `morada` , `cidade` , `codigopostal` , `instagram` ) VALUES (NULL, '".$username."', '".$nomeapelido."', '".$password."', '".$email."' , '".$nif."' , '".$morada."', '".$cidade."' , '".$codigopostal."' , '".$instagram."');";
          
          $resultado=DBExecute($insere);
          

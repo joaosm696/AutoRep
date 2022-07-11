@@ -233,19 +233,19 @@ if (isset($_SESSION['id'])) {
                                                     <!-- FORM PRODUTO -->
                                                     <div class="form-group mb-2">
                                                         <label for="exampleInputEmail1">Nome</label>
-                                                        <input required type="text" value="{$row['nome']}" class="form-control" id="exampleInputEmail1"
+                                                        <input  type="text" value="{$row['nome']}" class="form-control" id="exampleInputEmail1"
                                                             aria-describedby="emailHelp" placeholder="Nome do Produto" name="nome">
                                                     </div>
                                                     <div class="form-group mb-2">
                                                         <label for="exampleInputEmail1">Descrição</label>
-                                                        <input required type="text" value="{$row['descricao']}" class="form-control" id="exampleInputEmail1"
+                                                        <input  type="text" value="{$row['descricao']}" class="form-control" id="exampleInputEmail1"
                                                             aria-describedby="emailHelp" placeholder="Descrição do Produto"
                                                             name="descricao">
                                                     </div>
                                                     <!-- valor -->
                                                     <div class="form-group mb-2">
                                                         <label for="exampleInputEmail1">Preço</label>
-                                                        <input required
+                                                        <input 
                                                              type="text" 
                                                              value="{$row['valor']}" 
                                                              class="form-control"

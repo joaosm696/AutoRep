@@ -57,6 +57,8 @@
 
             <input type="text" name="codigopostal" id="inputCodigoPostal" class="form-control" placeholder="Codigo-Postal" name="CodigoPostal" required>
 
+            <input type="text" name="instagram" id="inputInstagram" class="form-control" placeholder="@instagram" name="Instagram" required>
+
             <input type="submit" name="submit" type="button" name="Registar" class="next action-button" value="Registar" />
         </fieldset>
 

@@ -100,6 +100,8 @@
                         if (isset($admin) && $admin == 1) {
                             echo '<a href="painel.php" class="btn btn-primary btn-sm ms-3">
                             <i class="bi bi-cup"></i> Painel </a>';
+                            echo '<a href="adminutilizadores.php" class="btn btn-primary btn-sm ms-3">
+                            <i class="bi bi-person-x-fill"></i> Utilizadores </a>';
                         }
                         if (isset($_SESSION['id'])) {
                             echo '<a href="profile.php" class="btn btn-primary btn-sm ms-3">

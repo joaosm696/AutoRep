@@ -146,3 +146,11 @@ function BuscarQtdItemCarrinho($id) {
 	$result = mysqli_fetch_array($resp, MYSQLI_ASSOC);
 	return $result;
 }
+
+
+function BuscarQtdCarrinhoFinalizado($id){
+	$sql = "SELECT * FROM `carrinho` WHERE id_user = $id";
+	$resp = DBExecute($sql);
+	$result = mysqli_fetch_array($resp, MYSQLI_ASSOC);
+	return $result;
+}

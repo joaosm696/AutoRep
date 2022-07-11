@@ -11,6 +11,7 @@ $email = $utilizador['email'];
 $nif = $utilizador['nif'];
 $morada = $utilizador['morada'];
 $codigopostal = $utilizador['codigopostal'];
+$instagram = $utilizador['instagram'];
 $pais = "Portugal";
 $cidade = $utilizador['cidade'];
 $cidades = ["Coimbra", "Porto", "Lisboa", "Braga"];
@@ -77,8 +78,7 @@ $cidades = ["Coimbra", "Porto", "Lisboa", "Braga"];
                                                 <input type="text" class="form-control" id="firstName" value="<?= $username ?>" name="username" required disabled>
                                             </div>
                                         </h4>
-                                        <button class="btn btn-primary">Follow</button>
-                                        <button class="btn btn-outline-primary">Message</button>
+                                        <button class="btn btn-danger"><a href="historicocompras.php?id=<?=$id?>">Historico de Compras</a></button>
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@ $cidades = ["Coimbra", "Porto", "Lisboa", "Braga"];
                                             <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                                             <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                                         </svg>Instagram:</h6>
-                                    <span class="text-secondary">bootdey</span>
+                                    <span class="text-secondary"><?= $instagram ?></span>
                                 </li>
                             </ul>
                         </div>

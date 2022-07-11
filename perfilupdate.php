@@ -9,8 +9,8 @@ $email = $_POST['email'];
 $nif = $_POST['nif'];
 $morada = $_POST['morada'];
 $codigopostal = $_POST['codigopostal'];
-	$sql="UPDATE utilizadores SET `nomeapelido`='$nomecompleto', `email`='$email',  `nif`='$nif', `morada`='$morada', `cidade`='$cidade', `codigopostal`='$codigopostal' WHERE `id`='$id';";
-	$query=DBExecute($sql);
+$sql="UPDATE utilizadores SET `nomeapelido`='$nomecompleto', `email`='$email',  `nif`='$nif', `morada`='$morada', `cidade`='$cidade', `codigopostal`='$codigopostal' WHERE `id`='$id';";
+$query=DBExecute($sql);
 	header("location: profile.php");
 }
 ?>

@@ -5,7 +5,6 @@ include('carrinho.php');
 include('utilizador.php');
 $id = $_SESSION['id'];
 $utilizador = buscarUtilizador($id);
-
 $admin = $utilizador['admin'];
 $username = $utilizador['username'];
 $nomecompleto = $utilizador['nomeapelido'];
@@ -16,6 +15,12 @@ $pais = "Portugal";
 $cidade = $utilizador['cidade'];
 $cidades = ["Coimbra", "Porto", "Lisboa", "Braga"];
 if (isset($_POST['finishpay'])) {
+$nomecompleto = $_POST['nomecompleto'];
+$email = $_POST['email'];
+$morada = $_POST['morada'];
+$codigopostal = $_POST['codigopostal'];
+$pais = "Portugal";
+$cidade = $_POST['cidade'];
     $sql = "INSERT INTO fatura(nomecompleto, email, morada, codigopostal, pais, cidade) VALUES ('$nomecompleto','$email','$morada','$codigopostal','$pais','$cidade')";
     $response = DBExecute($sql);
     $carrinhoAtivo = VerificarCarrinhoExisteAtivo($id);
@@ -106,10 +111,9 @@ $ItensDoCarrinho = ListarTodoCarrinho($id);
                             <div>
                                 <table class="table">
                                     <thead>
-                                        <td><img width="50" src="<?= $item['urlImage']; ?>"/></td>
-                                        <td>
-                                            <h6 class="my-0"><?php echo $item['nomeProduto'] ?></h6>
-                                        </td>
+                                        <td><img width="50" src="<?= $item['urlImage']; ?>"/></td>  
+                                         <td> <class="my-0"><?php echo $item['nomeProduto'] ?></td>
+                                        
                                     </thead>
                                 </table>
                             </div>
